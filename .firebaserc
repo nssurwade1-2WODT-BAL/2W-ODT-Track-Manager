@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "w-odt-track-manager-cf9c7"
+  },
+  "targets": {
+    "w-odt-track-manager-cf9c7": {
+      "hosting": {
+        "app": [
+          "2w-odt-track-manager"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -1,0 +1,11 @@
+{
+  "name": "odt-test-master-seeder",
+  "private": true,
+  "description": "One-time Firestore testMaster seeder for 2W-ODT Track Manager",
+  "scripts": {
+    "seed": "node seed-test-master.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.0"
+  }
+}

@@ -1,0 +1,38 @@
+TRACK MANAGER — HOME SCREEN ICON SETUP
+
+Files:
+- icon-192.png
+- icon-512.png
+- apple-touch-icon.png
+- manifest.webmanifest
+
+1. Put all 4 files in the same folder as index.html.
+
+2. In index.html, inside <head>, add:
+
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Track Manager">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0b2d6b">
+
+3. Deploy:
+firebase deploy --only hosting
+
+ANDROID (Chrome):
+- Open https://2w-odt-track-manager.web.app
+- Chrome menu (⋮)
+- Add to Home screen / Install app
+- The home-screen label should be "Track Manager"
+- The generated traffic-signal + motorcycle icon will be used.
+
+iPHONE (Safari):
+- Open the same URL in Safari
+- Share → Add to Home Screen
+- The label should be "Track Manager"
+- Safari uses apple-touch-icon.png.
+
+If the old icon is still shown:
+- Delete the old home-screen shortcut.
+- Re-open the website after deployment.
+- Add it to Home Screen again.

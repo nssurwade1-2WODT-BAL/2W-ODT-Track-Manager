@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-title" content="Track Manager">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0b2d6b">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101828">
+  <title>2W ODT Track Manager</title>
+  <link rel="stylesheet" href="styles.css?v=1.0.2">
+</head>
+<body>
+  <!-- LOGIN -->
+  <section id="loginView" class="login-shell">
+    <div class="login-card">
+      <div class="brand-mark">🏍️</div>
+      <h1>2W-ODT Track Manager</h1>
+      <p>Track entry register and live track management</p>
+      <form id="loginForm">
+        <label>User ID<input id="loginUserId" required autocomplete="username" placeholder="Enter User ID"></label>
+        <label>Password<input id="loginPassword" type="password" required autocomplete="current-password" placeholder="Enter Password"></label>
+        <button class="btn primary full" type="submit">Log In</button>
+      </form>
+      <p id="loginError" class="error-text"></p>
+    </div>
+  </section>
+
+  <!-- APP -->
+  <section id="appView" class="app-shell hidden">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-icon">🏍️</span>
+        <div><strong>2W ODT Track Manager</strong><small>Live Track Entry Register</small></div>
+      </div>
+      <div class="user-area">
+        <span id="currentUserLabel"></span>
+        <button id="logoutBtn" class="btn ghost">Log Out</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <!-- LIVE -->
+      <section id="tab-live" class="tab-page active">
+        <div class="page-heading">
+          <div><h2>Live Track Status</h2><p id="liveSubtitle">Real-time track availability</p></div>
+          <div id="trackStatusBadge" class="status-badge empty">TRACK EMPTY</div>
+        </div>
+
+        <div class="status-grid">
+          <article class="metric-card">
+            <span>Current Mode</span><strong id="currentMode">EMPTY</strong>
+          </article>
+          <article class="metric-card">
+            <span>Active Tests</span><strong id="activeCapacity">0 / —</strong>
+          </article>
+          <article class="metric-card">
+            <span>Waiting Requests</span><strong id="approvedCount">0</strong>
+          </article>
+        </div>
+
+        <div class="section-header">
+          <h3>Currently Active</h3>
+          <span id="activeCountText" class="muted">0 tests on track</span>
+        </div>
+        <div id="activeTests" class="card-list"></div>
+
+        <div class="section-header">
+          <h3>Waiting — Ready to Start</h3>
+        </div>
+        <div id="approvedTests" class="card-list"></div>
+      </section>
+
+      <!-- REQUESTS -->
+      <section id="tab-requests" class="tab-page">
+        <div class="page-heading">
+          <div><h2>Track Requests</h2><p>Create and manage pending requests</p></div>
+          <button id="newRequestBtn" class="btn primary">+ New Request</button>
+        </div>
+
+        <div id="requestModeInfo" class="info-banner"></div>
+        <div id="pendingRequests" class="card-list"></div>
+      </section>
+
+      <!-- TODAY -->
+      <section id="tab-today" class="tab-page">
+        <div class="page-heading">
+          <div><h2>Today's Register</h2><p id="todayDateLabel"></p></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Rider/Pillion</th><th>Entry Time</th><th>Out Time</th>
+                <th>Track Usage</th><th>Test Vehicle</th><th>Test Name</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="todayTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- HISTORY -->
+      <section id="tab-history" class="tab-page history-page">
+        <div class="page-heading">
+          <div><h2>History</h2><p>Read-only historical records</p></div>
+        </div>
+        <div class="filters history-filters">
+          <label>From Date<input id="historyFromDate" type="date"></label>
+          <label>To Date<input id="historyToDate" type="date"></label>
+          <button id="historyClearBtn" class="btn secondary small" type="button">Clear</button>
+          <button id="historyExportBtn" class="btn secondary small" type="button">Export Excel</button>
+        </div>
+        <div class="history-result-bar">
+          <span id="historyResultInfo" class="muted">Showing latest 100 records</span>
+          <button id="historyLoadMore" class="btn secondary small hidden" type="button">Load More</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Rider/Pillion</th><th>Vehicle</th><th>Test</th><th>Direction</th><th>Start</th><th>End</th></tr>
+            </thead>
+            <tbody id="historyTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- USERS (MANAGER ONLY) -->
+      <section id="tab-users" class="tab-page manager-only">
+        <div class="page-heading">
+          <div><h2>User Management</h2><p>Manager-only account administration</p></div>
+          <button id="newUserBtn" class="btn primary">+ Add User</button>
+        </div>
+        <div id="usersList" class="card-list"></div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button data-tab="live" class="nav-item active">🏁<span>Live</span></button>
+      <button data-tab="requests" class="nav-item">📋<span>Requests</span></button>
+      <button data-tab="today" class="nav-item">📅<span>Today</span></button>
+      <button data-tab="history" class="nav-item history-nav">📚<span>History</span></button>
+      <button data-tab="users" class="nav-item manager-nav hidden">👥<span>Users</span></button>
+    </nav>
+  </section>
+
+  <!-- REQUEST MODAL -->
+  <div id="requestModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-heading"><h3>New Track Request</h3><button class="icon-btn close-modal">×</button></div>
+      <form id="requestForm">
+        <label>Rider
+          <select id="requestRider" required><option value="">Select Rider</option></select>
+        </label>
+        <label>Pillion
+          <select id="requestPillion"><option value="">No Pillion</option></select>
+        </label>
+        <label>Vehicle Name<input id="vehicleName" required placeholder="Example: T105B"></label>
+        <label>Select Test
+          <select id="testName" required><option value="">Select a test</option></select>
+        </label>
+        <div id="testDirectionPreview" class="direction-preview">Select a test to see track direction</div>
+        <button class="btn primary full" type="submit">Submit Request</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- USER MODAL -->
+  <div id="userModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-heading"><h3>Create User</h3><button class="icon-btn close-modal">×</button></div>
+      <form id="userForm">
+        <label>Name<input id="newUserName" required></label>
+        <label>User ID<input id="newUserId" required></label>
+        <label>Password<input id="newUserPassword" type="password" required></label>
+        <label>Role
+          <select id="newUserRole" required>
+            <option value="Rider">Rider</option>
+            <option value="External">External</option>
+            <option value="Manager">Manager</option>
+          </select>
+        </label>
+        <button class="btn primary full" type="submit">Create User</button>
+        <div id="userFormMessage" class="form-message hidden" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <!-- Firebase SDK (Phase 1: connection only; app.js remains a normal script) -->
+  <script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <!-- Existing application logic: intentionally kept as a normal script -->
+  <script src="app.js?v=1.0.3"></script>
+</body>
+</html>

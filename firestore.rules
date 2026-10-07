@@ -1,0 +1,25 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /testMaster/{testId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
+    // Phase 4 prototype: requests are synchronized through Firestore.
+    // Server-side authentication and atomic safety enforcement will replace
+    // these temporary open rules before production use.
+    match /requests/{requestId} {
+      allow read, write: if true;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
